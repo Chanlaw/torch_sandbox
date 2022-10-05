@@ -4,12 +4,16 @@ import random
 from typing import Tuple, List
 
 import numpy as np
+import pandas as pd
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from tqdm import tqdm
 
 from grokking_utils import full_loss, Transformer
+
+alpha = 0.3
+cuda = "cuda"
 
 
 def gen_train_test(frac_train, num, seed=0):
@@ -87,10 +91,14 @@ if __name__ == "__main__":
     model, train_losses, test_losses = train_model(
         p=113,
         frac_train=0.3,
-        n_epochs=300,
-        alpha=0.3,
+        n_epochs=40000,
+        alpha=alpha,
         record_every=100,
         seed=0,
-        cuda=None,
+        cuda=cuda,
         weight_decay=0.0,
+    )
+
+    pd.dataframe(train_loss=train_losses, test_loss=test_losses).to_csv(
+        f"train_{alpha}.csv"
     )
