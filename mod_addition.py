@@ -58,10 +58,10 @@ def train_model(
     if cuda is not None:
         cuda = torch.device(cuda)
         model.to(cuda)
-        train_data.to(cuda)
-        test_data.to(cuda)
-        train_labels.to(cuda)
-        test_labels.to(cuda)
+        train_data = train_data.to(cuda)
+        test_data = test_data.to(cuda)
+        train_labels = train_labels.to(cuda)
+        test_labels = test_labels.to(cuda)
 
     optimizer = torch.optim.AdamW(
         model.parameters(), lr=1e-3, weight_decay=weight_decay, betas=(0.9, 0.98)
