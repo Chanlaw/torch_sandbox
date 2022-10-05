@@ -56,6 +56,7 @@ def train_model(
     test_labels = torch.tensor([(i + j) % p for i, j, p in test_data])
 
     if cuda is not None:
+        cuda = torch.device(cuda)
         model.to(cuda)
         train_data.to(cuda)
         test_data.to(cuda)
@@ -70,6 +71,7 @@ def train_model(
     )
 
     for epoch in tqdm(range(n_epochs)):
+        model(train_data)
         train_loss = full_loss(model, train_data, train_labels)
         test_loss = full_loss(model, test_data, test_labels)
         train_losses.append(train_loss.item())
