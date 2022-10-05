@@ -22,7 +22,7 @@ def gen_train_test(frac_train, num, seed=0):
     random.seed(seed)
     random.shuffle(pairs)
     div = int(frac_train * len(pairs))
-    return pairs[:div], pairs[div:]
+    return torch.tensor(pairs[:div]), torch.tensor(pairs[div:])
 
 
 def train_model(
@@ -57,6 +57,8 @@ def train_model(
 
     if cuda is not None:
         model.to(cuda)
+        train_data.to(cuda)
+        test_data.to(cuda)
         train_labels.to(cuda)
         test_labels.to(cuda)
 
