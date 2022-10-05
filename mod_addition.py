@@ -29,7 +29,7 @@ def train_model(
     record_every: int = 100,
     seed: int = 0,
     weight_decay: float = 1.0,
-    cuda=False,
+    cuda=None,
 ) -> Tuple[Transformer, List[float], List[float]]:
     model = Transformer(
         num_layers=1,
@@ -51,10 +51,10 @@ def train_model(
     train_labels = torch.tensor([(i + j) % p for i, j, p in train_data])
     test_labels = torch.tensor([(i + j) % p for i, j, p in test_data])
 
-    if cuda:
-        model.to("cuda")
-        train_labels.to("cuda")
-        test_labels.to("cuda")
+    if cuda is not None:
+        model.to(cuda)
+        train_labels.to(cuda)
+        test_labels.to(cuda)
 
     optimizer = torch.optim.AdamW(
         model.parameters(), lr=1e-3, weight_decay=weight_decay, betas=(0.9, 0.98)
@@ -91,8 +91,6 @@ if __name__ == "__main__":
         alpha=0.3,
         record_every=100,
         seed=0,
-        cuda=False,
+        cuda=None,
         weight_decay=0.0,
     )
-
-# %%
